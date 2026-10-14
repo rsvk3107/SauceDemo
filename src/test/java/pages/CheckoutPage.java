@@ -33,18 +33,28 @@ public class CheckoutPage {
                 driver, Duration.ofSeconds(10));
     }
 
+
     public void enterCustomerDetails(
             String first, String last, String zip) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                firstName)).sendKeys(first);
 
+        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName))
+                .clear();
+        driver.findElement(firstName).sendKeys(first);
+
+        driver.findElement(lastName).clear();
         driver.findElement(lastName).sendKeys(last);
+
+        driver.findElement(postalCode).clear();
         driver.findElement(postalCode).sendKeys(zip);
     }
 
+
+
     public void continueCheckout() {
-        driver.findElement(continueButton).click();
+        wait.until(ExpectedConditions.elementToBeClickable(continueButton))
+                .click();
     }
+
 
     public int getSummaryItemCount() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(

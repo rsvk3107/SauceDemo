@@ -50,16 +50,21 @@ public class BaseTest {
 
                 options.addArguments("--start-maximized");
                 options.addArguments("--disable-notifications");
+                options.addArguments("--disable-save-password-bubble");
 
-                options.setExperimentalOption(
-                        "prefs",
-                        java.util.Map.of(
-                                "credentials_enable_service", false,
-                                "profile.password_manager_enabled", false
-                        )
-                );
+                // Disable password leak detection via command line
+                options.addArguments("--disable-features=PasswordLeakDetection");
+
+                // Disable password manager & breach check preferences
+                java.util.Map<String, Object> prefs = new java.util.HashMap<>();
+                prefs.put("credentials_enable_service", false);
+                prefs.put("profile.password_manager_enabled", false);
+                prefs.put("profile.password_manager_leak_detection", false);
+
+                options.setExperimentalOption("prefs", prefs);
 
                 driver = new ChromeDriver(options);
+
             }
             default -> throw new IllegalArgumentException(
                     "Unsupported browser: " + browser);

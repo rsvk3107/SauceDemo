@@ -10,6 +10,8 @@ import pages.CheckoutPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Objects;
+
 public class SauceDemoE2ETest extends BaseTest {
 
     private void loginAsStandardUser() {
@@ -20,7 +22,8 @@ public class SauceDemoE2ETest extends BaseTest {
                 properties.getProperty("password")
         );
     }
-// the below code contains the validations of the sause demo page
+
+    // the below code contains the validations of the sauce demo page
     @Test
     public void completeEndToEndPurchase() {
         loginAsStandardUser();
@@ -51,6 +54,11 @@ public class SauceDemoE2ETest extends BaseTest {
                 cart.containsProduct("Sauce Labs Bike Light"));
 
         cart.clickCheckout();
+
+        System.out.println("URL after Checkout: " + driver.getCurrentUrl());
+        System.out.println("Page title: " + driver.getTitle());
+        System.out.println("Page source contains first-name: "
+                + Objects.requireNonNull(driver.getPageSource()).contains("first-name"));
 
         CheckoutPage checkout = new CheckoutPage(driver);
 
@@ -86,6 +94,7 @@ public class SauceDemoE2ETest extends BaseTest {
                 "An invalid login error should be displayed");
     }
 
+
     @Test
     public void checkoutRequiresFirstName() {
         loginAsStandardUser();
@@ -98,12 +107,19 @@ public class SauceDemoE2ETest extends BaseTest {
         cart.clickCheckout();
 
         CheckoutPage checkout = new CheckoutPage(driver);
+
+        // Confirm checkout information page is displayed
         checkout.enterCustomerDetails("", "User", "500001");
         checkout.continueCheckout();
 
         Assert.assertTrue(
-                checkout.getErrorMessage().contains(
-                        "First Name is required"),
-                "Checkout should require a first name");
+                Objects.requireNonNull(driver.getCurrentUrl()).contains("checkout-step-one.html"),
+                "Browser should remain on the checkout information page"
+        );
+
+        Assert.assertTrue(
+                checkout.getErrorMessage().contains("First Name is required"),
+                "Checkout should require a first name"
+        );
     }
 }

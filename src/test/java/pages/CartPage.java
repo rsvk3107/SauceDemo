@@ -55,10 +55,17 @@ public class CartPage {
                 removeButton)).click();
     }
 
+
     public void clickCheckout() {
-        wait.until(ExpectedConditions.elementToBeClickable(
-                checkoutButton)).click();
+        wait.until(
+                ExpectedConditions.elementToBeClickable(checkoutButton)
+        ).click();
+
+        wait.until(
+                ExpectedConditions.urlContains("checkout-step-one.html")
+        );
     }
+
 
     private String xpathLiteral(String value) {
         if (!value.contains("'")) {
