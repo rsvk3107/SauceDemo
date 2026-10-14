@@ -12,13 +12,13 @@ pipeline {
         stage('Check Environment') {
             steps {
                 bat 'java -version'
-                bat 'mvn -version'
+                bat '"C:\\apache-maven-3.9.16\\bin\\mvn.cmd" -version'
             }
         }
 
         stage('Run Selenium Tests') {
             steps {
-                bat 'mvn -B clean test'
+                bat '"C:\\apache-maven-3.9.16\\bin\\mvn.cmd" -B clean test'
             }
         }
     }
