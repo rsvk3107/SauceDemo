@@ -20,7 +20,7 @@ public class SauceDemoE2ETest extends BaseTest {
                 properties.getProperty("password")
         );
     }
-
+// the below code contains the validations of the sause demo page
     @Test
     public void completeEndToEndPurchase() {
         loginAsStandardUser();
